@@ -1,0 +1,1 @@
+# base.py = Parent class for every database table.
