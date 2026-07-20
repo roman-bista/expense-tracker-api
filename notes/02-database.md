@@ -355,3 +355,121 @@ Perform Action
 | **403 Forbidden**             | User authenticated but lacks permission | Access another user's data        |
 | **404 Not Found**             | Requested resource doesn't exist        | Transaction ID doesn't exist      |
 | **500 Internal Server Error** | Unexpected server error                 | Database crashed                  |
+
+
+
+autocommit=False
+
+SQLAlchemy does not automatically save changes.
+
+The developer decides when to save data by calling:
+
+db.commit()
+
+This helps keep the database consistent and supports transactions.
+
+
+Setting	Meaning
+autocommit=False------>	Don't automatically save changes. Wait for db.commit().
+autoflush=False------->	 Don't automatically flush pending SQL before queries. Let the developer control it.
+
+Client Request
+      │
+      ▼
+FastAPI
+      │
+      ▼
+Depends(get_db)
+      │
+      ▼
+get_db()
+
+db = SessionLocal()
+
+      │
+      ▼
+yield db
+      │
+      ▼
+Endpoint receives:
+
+db: Session
+      │
+      ▼
+Endpoint queries database
+      │
+      ▼
+Endpoint returns response
+      │
+      ▼
+get_db() resumes
+      │
+      ▼
+db.close()
+
+-----------------------------------------------------
+-----------------------------------------------------
+
+Python Class
+
+↓
+
+Inherits Base
+
+↓
+
+SQLAlchemy recognizes it
+
+↓
+
+Can create a PostgreSQL table
+
+Base tells SQLAlchemy that this Python class is a database model.
+
+
+
+
+
+
+users
+---------------------------------------------------------
+id
+- Integer
+- Primary Key
+- Unique
+- Auto Increment
+- Not Null
+
+first_name
+- String
+- Not Null
+
+last_name
+- String
+- Not Null
+
+email
+- String
+- Unique
+- Indexed
+- Not Null
+
+hashed_password
+- String
+- Not Null
+
+is_active
+- Boolean
+- Default True
+- Not Null
+
+created_at
+- DateTime
+- Default Current Timestamp
+- Not Null
+
+updated_at
+- DateTime
+- Default Current Timestamp
+- Auto Update on Modification
+- Not Null
