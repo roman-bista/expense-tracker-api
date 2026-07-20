@@ -1,6 +1,9 @@
+
+
 from app.database.base import Base
 from sqlalchemy.orm import Mapped, mapped_column
-
+from datetime import datetime
+from sqlalchemy import func
 class User(Base):
     __tablename__ = "users"
 
@@ -13,5 +16,21 @@ class User(Base):
     )
 
     hashed_password: Mapped[str] = mapped_column(
+        nullable=False
+    )
+
+    is_active: Mapped[bool] = mapped_column(
+        default=True,
+        nullable=False
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+    server_default=func.now(),
     nullable=False
-)
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+    server_default=func.now(),
+    onupdate=func.now(),
+    nullable=False
+    )
