@@ -1,7 +1,6 @@
 
-
 from app.database.base import Base
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column,relationship
 from datetime import datetime
 from sqlalchemy import func
 class User(Base):
@@ -34,3 +33,17 @@ class User(Base):
     onupdate=func.now(),
     nullable=False
     )
+
+    transactions: Mapped[list["Transaction"]] = relationship(
+    "Transaction",
+    back_populates="user"
+    )   
+
+
+# ✅ Base
+# ✅ Mapped
+# ✅ mapped_column
+# ✅ relationship
+# ✅ email
+# ✅ hashed_password
+# Just ensure the transactions relationship is inside the User class.
